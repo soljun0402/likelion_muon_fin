@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+{% block content %}
+<style type="text/css"> 
+  body{ 
+      text-align: center; 
+      display: block; 
+      margin: 0 auto; 
+      font-size: 16px; 
+      color: #3a3a3a; 
+  } 
+  h1{ 
+      font-family: 'Oswald', sans-serif; 
+      font-size: 30px; 
+      color: #4b0057; 
+      font-weight: bold;
+  }
+
+  p1 {
+     font-size: 20px;
+  } 
+  p2 {
+    font-size: 30px;
+    font-weight: bold;
+  }
+  label { 
+      display: block; 
+      margin-top: 20px; 
+      letter-spacing: 2px; 
+  } 
+  form { 
+      margin: 0 auto; 
+      width: 459px; 
+  } 
+  input, textarea { 
+      width: 439px; 
+      height: 27px; 
+      background-color: #efefef; 
+      border-radius: 6px; 
+      border: 1px solid #dedede; 
+      padding: 10px; 
+      margin-top: 3px; 
+      font-size: 0.9em; 
+      color: #3a3a3a; 
+  } 
+      input:focus, textarea:focus{ 
+          border: 1px solid #97d6eb; 
+      } 
+  
+  textarea{ 
+      height: 60px; 
+      background-color: #efefef; 
+  } 
+  #submit{ 
+      width: 127px; 
+      height: 48px; 
+      text-align: center; 
+      border: none; 
+      margin-top: 20px; 
+      cursor: pointer; 
+  } 
+  #submit:hover{ 
+      color: #4b0057; 
+      background-color: #f2f2f2; 
+      opacity: 0.9; 
+  } 
+  #cancel { 
+      width: 127px; height: 48px; 
+      text-align: center; 
+      border: none; 
+      margin-top: 20px; 
+      cursor: pointer; 
+  } 
+  #cancel:hover{ 
+      color: #4b0057; 
+      background-color: #f2f2f2; 
+      opacity: 0.9; 
+  }
+
+ .modal { 
+      position: fixed; 
+      left: 0; 
+      top: 0; 
+      width: 100%; 
+      height: 100%; 
+      background-color: rgba(0, 0, 0, 0.5); 
+      opacity: 0; 
+      visibility: hidden; 
+      transform: scale(1.1); 
+      transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s; 
+  } 
+  .modal-content { 
+      position: absolute; 
+      top: 50%; 
+      left: 50%; 
+      transform: translate(-50%, -50%); 
+      background-color: white; 
+      padding: 1rem 1.5rem; 
+      width: 500px; 
+      height: 350px; 
+      border-radius: 0.5rem; 
+  } 
+  .close-button { 
+      float: right; 
+      width: 1.5rem; 
+      line-height: 1.5rem; 
+      text-align: center; 
+      cursor: pointer; 
+      border-radius: 0.25rem; 
+      background-color: white; 
+  } 
+  .close-button:hover { 
+      background-color: #EFEFEF; 
+  } 
+  .show-modal { 
+      opacity: 1; 
+      visibility: visible; 
+      transform: scale(1.0); 
+      transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s; 
+  } 
+  
+</style>
+
+
+<!--평가하기 버튼 --> 
+<button class="trigger">평가하기</button> 
+
+<!-- 팝업 될 레이어 --> 
+<div class="modal"> 
+ <div class="modal-content"> 
+     <span class="close-button">&times;</span> 
+     <h1 class="title">점수 입력</h1> 
+     
+     <form action="{% url 'musical' product.pID %}" method="POST"> 
+       {%csrf_token%}
+       <li><p2>넘버</p2>
+       <input type="number" max='5' min='0' name="score1" placeholder="5 이하의 숫자를 입력해 주세요" required="required"></li>
+       <li><p2>배우</p2>
+       <input type="number" max='5' min='0' name="score2" placeholder="5 이하의 숫자를 입력해 주세요" required="required"></li>
+       <li><p2>무대</p2>
+       <input type="number" max='5' min='0' name="score3" placeholder="5 이하의 숫자를 입력해 주세요" required="required"></li>
+       <li><p2>스토리</p2>
+       <input type="number" max='5' min='0' name="score4" placeholder="5 이하의 숫자를 입력해 주세요" required="required"></li> 
+     
+       <input type="button" id="cancel" value="취소"> 
+       <input type="submit" id="submit" value="입력"> 
+     </form> 
+ </div> 
+</div>
+
+
+<script type="text/javascript"> 
+  var modal = document.querySelector(".modal"); 
+  var trigger = document.querySelector(".trigger"); 
+  var closeButton = document.querySelector(".close-button"); 
+  var cancelButton = document.querySelector("#cancel");
+
+
+  function toggleModal() { 
+       modal.classList.toggle("show-modal"); 
+   }
+
+  function windowOnClick(event) { 
+       if (event.target === modal) { 
+           toggleModal(); 
+       } 
+   }
+
+  trigger.addEventListener("click", toggleModal); 
+   closeButton.addEventListener("click", toggleModal); 
+   cancel.addEventListener("click", toggleModal); 
+   window.addEventListener("click", windowOnClick); 
+</script>
+
+<div>
+<a href="{% url 'like_product' product.pID %}"><button id="Im_in">관심공연등록</button></a>
+</div>
+<div>
+<div id="poster">
+ <!--뮤지컬 포스터 이미지{{product.img}}-->
+ <img src="{{product_api.poster}}", width="100", height="100">
+</div>
+<div class="base_info">
+ <!-- 제목 -->
+ <h1>{{product_api.prfnm}}</h1>
+ <!--표 태그-->
+</div>
+<div class="rating">
+ <!--별점 점수 공개-->
+</div>
+<h2>줄거리</h2>
+<p>{{product_api.sty}}</p>
+<h2>티켓가격</h2>
+<p>{{product_api.pcseguidance}}</p>
+</div>
+
+
+{% endblock %}
+{% for product in products %}
+  <div class="info_s">
+    <div class="info_1">
+      <a href="{% url 'musical' product.mt20id %}">{{product.prfnm}}</a>
+      <img src="{{product.poster}}", width="100", height="100">
+      <p1>장소</p1>
+      <p2>{{product.fcltynm}}</p2>
+    </div>
+    <div class="info_2">
+      <h3>{{product.prfpdfrom}}</h3>
+      <br>
+      <h3>-</h3>
+      <br>
+      <h3>{{product.prfpdto}}</h3>
+    </div>
+  </div><br><br>
+  {% endfor %}
+
+
+    {% if product_api.styurls.styurl|length >= 10 %}
+    {% else %}
+    <form method="GET" action="{% url 'musical' product.pID%}" >
+        <div class="detail_sort" id="detail_sort">
+            <div class="datail1"><button type="submit" value="detail1" id="detail1" name="detail_sort">상세정보1</button></div>
+            <div class="detail2"><button type="submit" value="detail2" id="detail2" name="detail_sort">상세정보2</button></div>
+            <div class="detail3"><button type="submit" value="detail3" id="detail3" name="detail_sort">상세정보3</button></a></div>
+        </div>
+    </form>
+    {% endif %}
+    <img src="{{d_img}}" , width="700" >
+
+
+    {% if tag|length == 0 %}
+        {% else %}
+        <dl>
+            <dt>뮤지컬</dt>
+            <dd>{{tag}}</dd>
+        </dl>
+        {% endif %}
+
+        {% if tags|length == 0 %}
+        {% else %}
+        <dl>
+            <dt>뮤지컬</dt>
+            <dd>{{tags.title}}</dd>
+        </dl>
+        {% endif %}

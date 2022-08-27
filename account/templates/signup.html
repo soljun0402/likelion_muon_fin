@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+
+  .container {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  h2 {
+    margin: 20;
+    text-align: center;
+  }
+
+  form {
+    margin: 20;
+    text-align: center;
+  }
+
+  button {
+    background: #4b0057; 
+    border-radius: 20px; 
+    color: white;
+    border: none;
+    height: 30px;
+    cursor: pointer;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .error{
+    text-align: center;
+    color: red;
+  }
+
+  p1 {
+    font-size: 11px;
+    display:block;
+    font-weight: bold;
+    color: rgb(102, 43, 89)
+  }
+
+  nav {
+    width: 100%;
+    height: 10%;
+  }
+
+  input {
+    border-radius: 15px;
+    width: 250px;
+    height: 35px;
+    border-color: #4b0057;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  input:focus {
+    background-color: #4b0057;
+    color: white;
+  }
+
+  .input_id, .input_nn, .input_pw, .input_check {
+    width: 63%;
+    display: flex;
+    justify-content: left;
+  }
+
+  .label_id, .label_nn, .label_pw, .label_check {
+    width: 37%;
+    text-align: right;
+  }
+
+</style>
+
+<body>
+
+<!-- 기존 회원가입 form
+
+  <div class="container">
+    <br>
+    <h2>회원가입</h2>
+    <br>
+    {% if error %} <p class="error">{{error}}</p> {% endif %}
+    <form method="POST">
+      {% csrf_token %}
+      <h4>아이디 <input name="username" type="text"></h4>
+
+      <h4><label for="id_nickname">닉네임</label>
+        <input type="text" name="nickname" maxlength="100" required id="id_nickname"></h4>
+
+      <h4>비밀번호 <input name="password1" type="password"></h4>
+      <h4>비밀번호 확인 <input name="password2" type="password"></h4>
+      <p1>비밀번호는 최소 8 문자 이상으로 구성해주세요.</p1>
+      <p1>최소 숫자와 문자를 포함해주세요.</p1><br>
+      <br><button type="submit">회원 등록</button>
+    </form>
+  </div>
+-->
+
+<div class="container">
+  <br>
+  <h2>회원가입</h2>
+  <br>
+  {% if error %} <p class="error">{{error}}</p> {% endif %}
+  <form method="POST">
+    {%csrf_token%}
+    <div class="container_my-3">
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <td class="label_id">아이디</td>
+            <td class="input_id"><input name="username" type="text"></td>
+          </tr>
+          <tr>
+            <td class="label_nn">닉네임</td>
+            <td class="input_nn"><input type="text" name="nickname" maxlength="100" required id="id_nickname"></td>
+          </tr>
+          <tr>
+            <td class="label_pw">비밀번호</td>
+            <td class="input_pw"><input name="password1" type="password"></td>
+          </tr>
+          <tr>
+            <td class="label_check">비밀번호 확인</td>
+            <td class="input_check"><input name="password2" type="password"></td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <p1>비밀번호는 최소 8 문자 이상으로 구성해주세요.</p1>
+      <p1>최소 숫자와 문자를 포함해주세요.</p1><br>
+      <br>
+      <button type="submit">회원 등록</button>
+    </div>
+  </form>
+</div>
+
+
+</body>
+
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    button {
+                background: #4b0057; 
+                border-radius: 15px; 
+                color: white; 
+                border:none;
+                margin-left: 10px;
+                height: 35px;
+                cursor: pointer;
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+    
+    .board_create .category,
+    .board_create .title,
+    .board_create .name {
+        padding: 10px;
+    }
+
+    .board_create .category select {
+        border-radius: 15px;
+        width: 150px;
+        height: 35px;
+        border-color: #4b0057;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+    .board_create .category select:focus {
+        background-color: #4b0057;
+        color: white;
+    }
+
+    .board_create .title input {
+        border-radius: 15px;
+        width: 500px;
+        height: 35px;
+        border-color: #4b0057;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+    .board_create .title input:focus {
+        background-color: #4b0057;
+        color: white;
+    }
+
+
+    .board_create .name input {
+        border-radius: 15px;
+        width: 200px;
+        height: 35px;
+        border-color: #4b0057;
+        margin-bottom: 30px;
+    }
+
+    .board_create .name input:focus {
+        background-color: #4b0057;
+        color: white;
+    }
+
+    .board_create .text {
+        border-top: 2px solid #4b0057;
+        border-bottom: 2px solid #4b0057;
+    }
+
+    .board_create .text textarea {
+        display: block;
+        width: 100%;
+        height: 300px;
+        padding: 15px;
+        box-sizing: border-box;
+        border: 0;
+        resize: vertical;
+    }
+
+    .bt {
+        margin-top: 30px;
+        text-align: right;
+    }
+
+    .on {
+        font-weight: 800;
+    }
+
+</style>
+
+    <form method="post" action="{% url 'create' %}">
+    {% csrf_token %}
+    <div class="board_create">
+        <div class="category">
+            <select class="category_select" name="category" required>
+                <option value="etc">잡담</option>
+                <option value="information">정보</option>
+                <option value="review">후기</option>
+            </select>
+        </div>
+        <div class="title">
+            <input type="text" placeholder="  제목을 입력해 주세요." name="title" required></input>
+        </div>
+        <div class="name">
+            <input type="text" placeholder="  뮤지컬 이름" name="tags"></input>
+        </div>
+        <div class="text">
+            <textarea placeholder="내용을 입력하세요." name="text"></textarea>
+        </div>
+        <br>
+        <button type="submit" class="submit">등록하기</button>
+        
+    </div>
+    
+    </form>
+
+    <a href="{% url 'community' %}">
+{% endblock %}

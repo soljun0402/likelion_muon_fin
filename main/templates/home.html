@@ -1,0 +1,307 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+
+    .container {
+      max-width: 100%;
+      padding: 0;
+      margin: 0;
+    }
+
+    html, body {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+
+    *, *:before, *:after {
+    box-sizing: inherit;
+    }
+    .clearfix:after {
+    content: '';
+    display: block;
+    clear: both;
+    float: none;
+    }
+
+    /* ======== Calendar ======== */
+    .my-calendar {
+    width: 700px;
+    margin: 30px;
+    padding: 20px 20px 10px;
+    text-align: center;
+    font-weight: 800;
+    border: 1px solid #ddd;
+    cursor: default;
+    }
+    .my-calendar .clicked-date {
+    border-radius: 25px;
+    margin-top: 36px;
+    float: left;
+    width: 42%;
+    padding: 46px 0 26px;
+    background: #ddd;
+    }
+    .my-calendar .calendar-box {
+    float: right;
+    width: 58%;
+    padding-left: 30px;
+    }
+
+    .clicked-date .cal-day {
+    font-size: 24px;
+    }
+    .clicked-date .cal-date {
+    font-size: 130px;
+    }
+
+    .ctr-box {
+    padding: 0 16px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    }
+    .ctr-box .btn-cal {
+    position: relative;
+    float: left;
+    width: 25px;
+    height: 25px;
+    margin-top: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    }
+    .ctr-box .btn-cal:after {
+    content: '<';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    line-height: 25px;
+    font-weight: bold;
+    font-size: 20px;
+    }
+    .ctr-box .btn-cal.next {
+    float: right;
+    }
+    .ctr-box .btn-cal.next:after {
+    content: '>';
+    }
+
+    .cal-table {
+    width: 100%;
+    }
+    .cal-table th {
+    width: 14.2857%;
+    padding-bottom: 5px;
+    font-size: 16px;
+    font-weight: 900;
+    }
+    .cal-table td {
+    padding: 3px 0;
+    height: 50px;
+    font-size: 15px;
+    vertical-align: middle;
+    }
+    .cal-table td.day {
+    position: relative;
+    cursor: pointer;
+    }
+    .cal-table td.today {
+    background: #ffd255;
+    border-radius: 50%;
+    color: #fff;
+    }
+    .cal-table td.day-active {
+    background: #ff8585;
+    border-radius: 50%;
+    color: #fff;
+    }
+    .cal-table td.has-event:after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 4px;
+    background: #FFC107;
+    }
+
+    /*포스터 슬라이드*/
+    .section input[id*="slide"] {
+      display:none;
+    }
+    .section .slidewrap {
+      max-width: 500px;
+      margin:0 auto;
+      overflow:hidden;
+    }
+    .section .slidelist {
+      white-space:nowrap;
+      font-size:0;
+    }
+    .section .slidelist > li {
+      display:inline-block;
+      vertical-align:middle;
+      width:100%;
+      transition:all .5s;
+    }
+    .section .slidelist > li > a {
+      display: block;
+      position:relative;
+    }
+    /*(이미지).section .slidelist > li > a img {
+      width: 100%;
+    }*/
+    .section .slidelist label {
+      position:absolute;
+      z-index:10;
+      top:50%;
+      transform:translateY(-50%);
+      padding:50px;
+      cursor:pointer;
+    }
+    .section .slidelist .left {
+      left:30px;
+      background: url("static/arrow_left.png") center center / 100% no-repeat
+    }
+    .section .slidelist .right {
+      right:30px;
+      background:url("static/arrow_right.png") center center / 100% no-repeat
+    }
+    .section[id="slide01"]:checked ~ .slidewrap .slidelist > li {transform:translateX(0%);}
+    .section[id="slide02"]:checked ~ .slidewrap .slidelist > li {transform:translateX(-100%);}
+    .section[id="slide03"]:checked ~ .slidewrap .slidelist > li {transform:translateX(-200%);}
+
+    p {
+      font-size: 8px;
+      text-align:center;
+    }
+
+    a:visited {
+      color:#4B0057;
+    }
+ 
+    
+    .commu_info {
+      margin: 10%;
+      display: flex;
+    }
+
+    .community h3 {
+      font-style: bold;
+      color: #4B0057;
+      font-size: 30px;
+    }
+
+    .community {
+      margin-right: 10%;
+    }
+
+    .posts {
+        display: block;
+        width: 100%;
+    }
+
+    .line {
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .line > span {
+      font-size: 1.2rem;
+    }
+
+    .post_title {
+      width: 20%;
+    }
+
+    .post_sum {
+      width: 50%;
+    }
+
+    .link a, .post_title {
+      font-weight: 800;
+      color: #4B0057;
+    }
+
+    #brand {
+      width: 100%;
+    }
+    
+</style>
+
+<br>
+<br>
+<div class="container">
+  <img src="static/homedesign.png" id="brand" width="80%">
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <img src="static/calendar.png" id="calender" width="60%">
+
+
+  <!--포스터 수동 슬라이드-->
+  <div class="section">
+    <input type="image" name="slide" id="slide01" checked>
+    <input type="image" name="slide" id="slide02">
+    <input type="image" name="slide" id="slide03">
+
+    <div class="slidewrap">
+      <ul class="slidelist">
+        <li>
+          <a>
+            <label for="slide03" class="left"></label>
+            <!--포스터 이미지 slide01-->
+            <label for="slide02" class="right"></label>
+          </a>
+        </li>
+        <li>
+          <a>
+            <label for="slide01" class="left"></label>
+            <!--포스터 이미지 slide02-->
+            <label for="slide03" class="right"></label>
+          </a>
+        </li>
+        <li>
+          <a>
+            <label for="slide02" class="left"></label>
+            <!--포스터 이미지 slide03-->
+            <label for="slide01" class="right"></label>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="commu_info">
+    <div class="community">
+      <h3>COMMUNITY</h3>
+    </div>
+    <!--인기글 세 개만 가져오기-->
+    <div class="posts">
+      {% for post in posts %}
+      <div class="line">
+        <span class="post_title">{{post.title}}</span>
+        <!--미리보기-->
+        <span class="post_sum">{{post.summary}}</span>
+        <span class="link"><a href="{% url 'detail' post.id %}" style="font-size: 15px;">...MORE</a></span>
+        <br>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <br>
+  <br>
+  <p>뮤온의 뮤지컬 정보는 (재)예술경영지원센터 공연예술통합전산망(www.kopis.or.kr)으로부터 제공 받고 있습니다.</p>
+</div>
+
+
+
+{% endblock %}

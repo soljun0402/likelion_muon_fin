@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    {% load static %}
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>MUON</title>
+    <!-- 별점 -->
+    <script src="https://kit.fontawesome.com/337a175665.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        .container {
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 20px;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans KR', sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .menu {
+            margin-left: 10px;
+            margin-top: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            padding-left: 15px;
+            padding-right: 15px;
+            color: black;
+            text-decoration: none;
+
+        }
+
+        .menu:hover {
+            color: #4b0057;
+            text-decoration: none;
+
+        }
+
+
+        nav {
+            width: 100%;
+            height: 10%;
+        }
+
+        .loginout {
+            margin-top: 15px;
+            float: right;
+
+        }
+
+        /*팝업창*/
+
+        label {
+            display: block;
+            margin-top: 20px;
+            letter-spacing: 2px;
+        }
+
+        form {
+            margin: 0 auto;
+            width: 459px;
+        }
+
+        input,
+        textarea {
+            width: 439px;
+            height: 27px;
+            background-color: #efefef;
+            border-radius: 6px;
+            border: 1px solid #dedede;
+            padding: 10px;
+            margin-top: 3px;
+            font-size: 0.9em;
+            color: #3a3a3a;
+        }
+
+        input:focus,
+        textarea:focus {
+            border: 1px solid #97d6eb;
+        }
+
+        textarea {
+            height: 60px;
+            background-color: #efefef;
+        }
+
+        #submit {
+            width: 127px;
+            height: 48px;
+            text-align: center;
+            border: none;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        #submit:hover {
+            color: #fff;
+            background-color: #4b0057;
+            opacity: 0.9;
+        }
+
+        #cancel {
+            width: 127px;
+            height: 48px;
+            text-align: center;
+            border: none;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        #cancel:hover {
+            color: #fff;
+            background-color: #4b0057;
+            opacity: 0.9;
+        }
+
+        .modal {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(1.1);
+            transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 1rem 1.5rem;
+            width: 500px;
+            height: 350px;
+            border-radius: 0.5rem;
+        }
+
+        .close-button {
+            float: right;
+            width: 1.5rem;
+            line-height: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 0.25rem;
+            background-color: lightgray;
+        }
+
+        .close-button:hover {
+            background-color: darkgray;
+        }
+
+        .show-modal {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1.0);
+            transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+        }
+
+        /*팝업창 끝*/
+
+
+        .info_box {
+            padding-top: 80px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .poster {
+            position: relative;
+            right: 4%;
+        }
+
+        .base {
+            width: 300px;
+        }
+
+        .rating {
+            position: relative;
+            left: 3%;
+        }
+
+        .bt_like button {
+            border: none;
+            color: #4b0057;
+            background-color: none;
+        }
+
+        .bt_like button:hover {
+            color: white;
+            background-color: #4b0057;
+        }
+
+        .label, .label_price,
+        .r_label {
+            font-weight: 800;
+        }
+
+        .label_price, .data_price {
+            color: #4b0057;
+            font-size: 1.2rem;
+        }
+
+        .label, .data, .label_price, .data_price,
+        .r_label, .r_star, .r_mean {
+            height: 35px;
+        }
+
+        .data, .data_price {
+            padding-left: 10%;
+            width: 150px;
+        }
+
+        .r_label {
+            width: 80px;
+        }
+
+        .r_star {
+            width: 80px;
+        }
+
+        .r_mean {
+            padding-left: 20%;
+            color: #4b0057;
+        }
+
+        .trigger {
+            border: none;
+            border-bottom: solid 2px #4b0057;
+            color: #4b0057;
+            background-color: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .trigger:hover {
+            color: white;
+            background-color: #4b0057;
+        }
+        .detail_sort {
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding: 0px 30px 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+        }
+
+        .detail_sort > div > button {
+
+            border: none;
+            /* border-bottom: solid 2px #4b0057; */
+            font-weight: 800;
+            color: #4b0057;
+            background-color: #f2f2f2;
+        }
+        /* .star-rating {
+            width:304px; 
+        }
+        .star-rating,.star-rating span {
+            display:inline-block; height:55px; overflow:hidden; background:url("{% static 'star.png' %}")no-repeat; 
+        }
+        .star-rating span{
+            background-position:left bottom; line-height:0; vertical-align:top; 
+        } */
+
+    </style>
+<body>
+    <nav>
+        <a href="{% url 'home' %}"><img src="{% static 'logo.png' %}" alt="" width="6%;" style="margin-left:3%; margin-top:1%;"></a>
+        <a href="{% url 'musical_list' %}" class="menu">뮤지컬</a>
+        <a href="{% url 'community' %}" class="menu">커뮤니티</a>
+        <div class="loginout">
+          {% if user.is_authenticated %}
+          <p1 style="font-weight: bold; font-size: 20px;">{{user.get_region_display}}</p1>
+          <p2 style="margin-left: 10px;">{{user.nickname}} 님</p2>
+      
+          <a href="{% url 'mypage' %}" class="menu">MYPAGE</a>
+          <a href="{% url 'logout' %}" class="menu">LOGOUT</a>
+          {% else %}
+          <a href="{% url 'login' %}" class="menu">LOGIN</a>
+          {% endif %}
+          </div>
+      </nav>
+
+
+    <div class="info_box">
+        <div class="poster">
+            <!--뮤지컬 포스터 이미지{{product.img}}-->
+            <img src="{{product_api.poster}}" , width="220" , height="320">
+        </div>
+        <div class="base">
+            <div class="bt_like">
+                <a href="{% url 'like_product' product.pID %}"><button id="Im_in">관심공연등록</button></a>
+            </div>
+            <br>
+            <div class="base_info">
+                <div class="title_info">
+                    <h1>{{product_api.prfnm}}</h1>
+                </div>
+                <div class="container_info">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr class="list">
+                                <td class="label">공연장르</td>
+                                <td class="data">{{product_api.genrenm}}</td>
+                            </tr>
+                            <tr class="list">
+                                <td class="label">장소</td>
+                                <td class="data">{{product_api.fcltynm}}</td>
+                            </tr>
+                            <tr class="list">
+                                <td class="label">공연기간</td>
+                                <td class="data">{{product_api.prfpdfrom}}-{{product_api.prfpdto}}</td>
+                            </tr>
+                            <tr class="list">
+                                <td class="label">런타임</td>
+                                <td class="data">{{product_api.prfruntime}}</td>
+                            </tr>
+                            <tr class="list">
+                                <td class="label">관람연령</td>
+                                <td class="data">{{product_api.prfage}}</td>
+                            </tr>
+                            <tr class="list">
+                                <td class="label_price">가격</td>
+                                <td class="data_price">{{product_api.pcseguidance}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="rating">
+            <table class="table table-borderless">
+                <tbody>
+                    <tr class="r_list">
+                        <td class="r_label">넘버</td>
+                        <td class="r_star">★☆☆☆☆</td>
+                        <td class="r_mean">{{product.score1|floatformat}}</td>
+                    </tr>
+                    <tr class="r_list">
+                        <td class="r_label">배우</td>
+                        <td class="r_star">★★☆☆☆</td>
+                        <td class="r_mean">{{product.score2|floatformat}}</td>
+                    </tr>
+                    <tr class="r_list">
+                        <td class="r_label">무대</td>
+                        <td class="r_star">★★★☆☆</td>
+                        <td class="r_mean">{{product.score3|floatformat}}</td>
+                    </tr>
+                    <tr class="r_list">
+                        <td class="r_label">스토리</td>
+                        <td class="r_star">★★★★★</td>
+                        <td class="r_mean">{{product.score4|floatformat}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- <div class="wrap-star">
+                <h2>넘버</h2>
+                <div class='star-rating'>
+                    <span style ="width:30%"></span>
+                </div>
+            </div>
+            <div class="wrap-star">
+                <h2>배우</h2>
+                <div class='star-rating'>
+                    <span style ="width:50%"></span>
+                </div>
+            </div>
+            <div class="wrap-star">
+                <h2>무대</h2>
+                <div class='star-rating'>
+                    <span style ="width:75%"></span>
+                </div>
+            </div>
+            <div class="wrap-star">
+                <h2>스토리</h2>
+                <div class='star-rating'>
+                    <span style ="width:75%"></span>
+                </div>
+            </div> -->
+            <br>
+            <!-- 평가하기 버튼-->
+            <button class="trigger">평가하기</button>
+            <!-- 팝업 될 레이어 -->
+            <div class="modal">
+                <div class="modal-content">
+                    <span class="close-button">&times;</span>
+                    <h1 class="title">점수 입력</h1>
+
+                    <form action="{% url 'musical' product.pID %}" method="POST">
+                        {%csrf_token%}
+                        <li>
+                            <p2>넘버</p2>
+                            <input type="number" max='5' min='0' name="score1" placeholder="5 이하의 숫자를 입력해 주세요"
+                                required="required">
+                        </li>
+                        <li>
+                            <p2>배우</p2>
+                            <input type="number" max='5' min='0' name="score2" placeholder="5 이하의 숫자를 입력해 주세요"
+                                required="required">
+                        </li>
+                        <li>
+                            <p2>무대</p2>
+                            <input type="number" max='5' min='0' name="score3" placeholder="5 이하의 숫자를 입력해 주세요"
+                                required="required">
+                        </li>
+                        <li>
+                            <p2>스토리</p2>
+                            <input type="number" max='5' min='0' name="score4" placeholder="5 이하의 숫자를 입력해 주세요"
+                                required="required">
+                        </li>
+
+                        <input type="button" id="cancel" value="취소">
+                        <input type="submit" id="submit" value="입력">
+                    </form>
+                </div>
+            </div>
+            <script type="text/javascript">
+                var modal = document.querySelector(".modal");
+                var trigger = document.querySelector(".trigger");
+                var closeButton = document.querySelector(".close-button");
+                var cancelButton = document.querySelector("#cancel");
+
+
+                function toggleModal() {
+                    modal.classList.toggle("show-modal");
+                }
+
+                function windowOnClick(event) {
+                    if (event.target === modal) {
+                        toggleModal();
+                    }
+                }
+
+                trigger.addEventListener("click", toggleModal);
+                closeButton.addEventListener("click", toggleModal);
+                cancel.addEventListener("click", toggleModal);
+                window.addEventListener("click", windowOnClick);
+            </script>
+        </div>
+    </div>
+    <br><br>
+    <!-- 줄거리 (정보 있으면 출력) -->
+    <div>
+        {% if product_api.sty %}
+        <h3>줄거리</h3>
+        <p>{{product_api.sty}}</p>
+        {% endif %}  
+    </div><br>
+    <!-- 상세정보 포스터 -->
+    <div>
+        {% if product_api.styurls.styurl|length >= 10 %}
+        {% else %}
+        <form method="GET" action="{% url 'musical' product.pID%}" >
+            <div class="detail_sort" id="detail_sort">
+                <div class="datail1"><button type="submit" value="detail1" id="detail1" name="detail_sort">상세정보1</button></div>
+                <div class="detail2"><button type="submit" value="detail2" id="detail2" name="detail_sort">상세정보2</button></div>
+                <div class="detail3"><button type="submit" value="detail3" id="detail3" name="detail_sort">상세정보3</button></div>
+            </div>
+        </form>
+        {% endif %}
+        <img src="{{d_img}}" , style="display:block; margin-left:auto; margin-right:auto;" >
+    </div>
+    
+</body>
+
+</html>
+

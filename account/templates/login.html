@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% load static %}
+
+
+<style>
+  
+  .container {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  h2 {
+    text-align: center;
+  }
+
+  form {
+    text-align: center;
+  }
+  
+  button {
+        background: #4b0057; 
+        border-radius: 20px; 
+        color: white;
+        border: none;
+        height: 30px;
+        cursor: pointer;
+        padding-left: 20px;
+        padding-right: 20px;
+  }
+
+  a {
+    color: black;
+  }
+
+  a:visited {
+    color: black;
+  }
+  
+  a:link {
+    color: black;
+    text-decoration: none;
+  }
+
+  a:hover{
+    color: #4b0057;
+  }
+
+  .error{
+    text-align: center;
+    color: red;
+  }
+
+  nav {
+    width: 100%;
+    height: 10%;
+  }
+
+  input {
+    border-radius: 15px;
+    width: 300px;
+    height: 35px;
+    border-color: #4b0057;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  input:focus {
+    background-color: #4b0057;
+    color: white;
+  }
+    
+  .account {
+    background-color: #f2f2f2;
+  }
+
+  .input_id, .input_pw {
+    width: 65%;
+    display: flex;
+    justify-content: left;
+  }
+
+  .label_id, .label_pw {
+    width: 35%;
+    text-align: right;
+  }
+      
+</style>
+
+<body>
+
+
+<!-- 기존 로그인 form
+
+  <div class="container">
+    <br>
+    <h2>로그인</h2>
+    <br>
+    {% if error %} <p class="error">{{error}}</p> {% endif %}
+    <form action="{% url 'login' %}" method="post" class="login_info">
+      {%csrf_token%}
+      <h4>아이디 <input name="username" type="text" class="account"></h4>
+      <h4>비밀번호 <input name="password" type="password" class="account"></h4>
+      <br><button type="submit">LOGIN</button>
+      <br>
+      <br>
+      <a href="{% url 'signup' %}">
+        <p>아직 계정이 없으신가요?</p>
+      </a>
+    </form>
+  </div>
+
+-->
+
+
+<div class="container">
+  <br>
+  <h2>로그인</h2>
+  <br>
+  {% if error %} <p class="error">{{error}}</p> {% endif %}
+  <form action="{% url 'login' %}" method="post" class="login_info">
+      {%csrf_token%}
+    <div class="container_my-3">
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <td class="label_id">아이디</td>
+            <td class="input_id"><input name="username" type="text" class="account"></td>
+          </tr>
+          <tr>
+            <td class="label_pw">비밀번호</td>
+            <td class="input_pw"><input name="password" type="password" class="account"></td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <button type="submit">LOGIN</button>
+      <br>
+      <br>
+      <br>
+      <a href="{% url 'signup' %}"><p>아직 계정이 없으신가요?</p></a>
+    </div>
+  </form>
+</div>
+
+
+</body>
+
+{% endblock %}

@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    .container {
+        margin-left:auto;
+        margin-right:auto;
+    }
+    .board_detail {
+        width: 100%;
+        border-top: 2px solid;
+        
+    }
+
+    .title {
+        padding: 20px 15px;
+        border-bottom: 1px solid;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .board_detail .info {
+        padding: 15px; 
+
+    }
+
+    .board_detail .info dl {
+        display: inline-block;
+        padding: 0 20px;
+    }
+
+    .board_detail .info dl:first-child {
+        padding-left: 0;
+    }
+
+    .board_detail .info dl dt,
+    .board_detail .info dl dd {
+        display: inline-block;
+        font-size: 0.85rem;
+    }
+
+    .board_detail .info dl dd p1 {
+        margin-left: 10px;
+        color: gray;
+    }
+
+    .board_detail .text {
+        padding: 15px;
+        border-bottom: 1px solid black;
+        line-height: 200%;
+        font-size: 1rem;
+    }
+
+    .comments, .write_comments {
+        padding: 15px;
+        border-bottom: 1px solid;
+        font-size: 1rem;
+        
+    }
+
+    .bt {
+        margin-top: 30px;
+        text-align: center;
+        font-weight: 800;
+    }
+
+    a {
+        color:black
+    }
+    
+    a:hover {
+        color: #4b0057
+    }
+
+
+    textarea {
+        padding: 10px;
+        width: 100%;
+        height: 75px;
+        border-radius: 10px;
+        border: solid 2px #4b0057;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    button {
+        background: #4b0057; 
+        border-radius: 20px; 
+        color: white;
+        border: none;
+        height: 30px;
+        cursor: pointer;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .edit {
+        text-align: center;
+            }
+
+
+</style>
+
+
+
+<div class="board_detail">
+    <div class="title">
+      {{post.title}}
+    </div>
+    <div class="info">
+        <dl>
+            <dt>작성자</dt>
+            <dd>{{post.writer}}</dd>
+        </dl>
+        <dl>
+            <dt>작성시간</dt>
+            <dd>{{post.created_date}}</dd>
+        </dl>
+        <dl>
+            <dt>조회수</dt>
+            <dd>{{post.view_count}}</dd>
+        </dl>
+        {% if tag|length == 0 %}
+        {% else %}
+        <dl>
+            <dt>뮤지컬</dt>
+            <dd>{{tag}}</dd>
+        </dl>
+        {% endif %}
+        <!--스크랩 버튼-->
+        <div class="bt_scrap">
+            <a href="{% url 'post_scrap' post.id %}"><button id="Im_in">스크랩</button></a>
+        </div>
+        
+    </div>
+
+    <div class="text">
+
+        {{post.text}}
+    </div>
+    <!-- 댓글 목록 -->
+    <div class="comments">
+        
+        <p> 댓글 {{comments.count}} 개 </p>
+        
+        {% for cmt in comments %}
+        
+            <h6 style="color: #4b0057">{{cmt.writer}}</h6>
+            {{cmt.contents}}
+            <p style="font-size: 0.8rem; text-align: end;">{{cmt.created_at}}</p1>
+            <hr>
+        {% endfor %}
+    </div>
+    <!-- 댓글 입력 -->
+    <div class="write_comments">
+        <h6>{{user.nickname}}</h6>
+        <br>
+        <form action="{% url 'detail' post.id %}" method="POST" class="comment_form">
+            {% csrf_token %}
+            <div class="comment_create">
+                <div class="contents">
+                    <textarea placeholder="내용을 입력하세요." name="contents"></textarea>
+                </div>
+                <br>
+                <button type="submit" class="submit">등록하기</button>
+                
+            </div>
+        </form>
+    </div>
+    <!--수정하기 및 삭제하기 버튼-->
+    <div class="edit">
+    {% if request.user == post.writer %}
+    <a href="{% url 'modify' post.id %}">수정하기</a>
+    <a href="{% url 'delete' post.id %}" class="delete">삭제하기</a>
+    {% endif %}
+    </div>
+
+    <div class="bt">
+        <a href="{% url 'community' %}">목록으로 돌아가기</a>
+    </div>
+</div>
+
+<!--삭제 확인창-->
+
+<script type='text/javascript'>
+    $(document).ready(function () {
+        $(".delete").on('click', function () {
+            if (confirm("정말로 삭제하시겠습니까?")) {
+                location.href = $(this).data('uri');
+            }
+        });
+    });
+</script>
+
+{% endblock %}

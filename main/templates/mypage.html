@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  a {
+    color: #4b0057;
+  }
+</style>
+
+<h1>{{user.nickname}}님 MYPAGE</h1>
+<hr>
+<br>
+<h4>관심 공연</h4>
+<hr>
+<div class="favorites">
+  {% for product in myproduct %}
+  <div class="line">
+    <span class="product_title">{{product.title}}</span>
+    <span class="link"><a href="{% url 'musical' product.pID %}" style="font-size: 15px;">상세정보</a></span>
+    <br>
+  </div>
+  {% endfor %}
+</div>
+<br>
+<br>
+<h4>내가 남긴 후기</h4>
+<hr>
+<div class="favorites">
+  {% for rv in myreview %}
+  <div class="line">
+    <span class="review_title" style="font-weight:bold;">{{rv.title}}</span>
+    <span class="review_content">{{rv.text|truncatechars:30}}</span>
+    <span class="link"><a href="{% url 'detail' post.id %}">...MORE</a></span>
+    <br>
+  </div>
+  {% endfor %}
+</div>
+<br>
+<br>
+<h4>스크랩한 글</h4>
+<hr>
+{% for scrap in myscrap %}
+<div class="scrap">
+  <span class="scrap_title" style="font-weight:bold;">{{scrap.title}}</span>
+  <span class="scrap_content">{{scrap.text|truncatechars:30}}</span>
+  <span class="link"><a href="{% url 'detail' post.id %}">...MORE</a></span>
+</div>
+{% endfor %}
+<br>
+<br>
+<h4>내가 쓴 글</h4>
+<hr>
+{% for post in mypost %}
+<div class="post">
+  <span class="post_title" style="font-weight:bold; margin-right: 10px;">{{post.title}}</span>
+  <span class="post_content">{{post.text|truncatechars:30}}</span>
+  <span class="link"><a href="{% url 'detail' post.id %}">...MORE</a></span>
+</div>
+{% endfor %}
+
+{% endblock %}
