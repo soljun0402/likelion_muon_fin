@@ -8,7 +8,7 @@ import decimal, sys, os
 from django.db.models import Q
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 import parserim
-from secrets import SECRET
+from secretkeys import SECRETS
 from django.contrib.auth.decorators import login_required
 
 def home(request):
@@ -62,7 +62,7 @@ def musical_detail(request, pID):
       product.score4 = (tmpS4*tmp + decimal.Decimal(request.POST['score4']))/product.review_count
       product.save()
 
-    key = SECRET['API_SECRET']
+    key = SECRETS['API_SECRET']
     product_id = str(pID)
     url = 'http://www.kopis.or.kr/openApi/restful/pblprfr/'+product_id+'?service='+key
     req = requests.get(url).text

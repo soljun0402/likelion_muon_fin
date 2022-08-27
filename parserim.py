@@ -5,13 +5,13 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings")
 ## 이제 장고를 가져와 장고 프로젝트를 사용할 수 있도록 환경을 만듭니다.
 import django
-from secrets import SECRET
+from secretkeys import SECRETS
 django.setup()
 from main.models import Product
 from datetime import datetime
 
 def parse_product():
-    key = SECRET['API_KEY']
+    key = SECRETS['API_KEY']
     start = str(datetime.today().strftime('%Y%m%d'))
     end = str(int(start)+10000)
     url1 = 'http://www.kopis.or.kr/openApi/restful/pblprfr?service='+ key +'&stdate='+start+'&eddate='+end+'&rows=100&cpage=1&shcate=AAAA&signgucode=11'
